@@ -12,6 +12,20 @@ test_that("Word counts work", {
   expect_named(search1, c("mentions", "word"))
 })
 
+test_that("Multi-word word counts work", {
+  text_to_search <- "Pigs are very smart animals, extremely smart animals"
+  search1 <- count_word_mentions(
+    text_to_search,
+    c("very smart", "smart animals"),
+    TRUE
+  )
+  expect_equal(search1$mentions[search1$word == "very smart"], 1L)
+  expect_equal(search1$mentions[search1$word == "smart animals"], 2L)
+  expect_true(inherits(search1, "data.frame"))
+  expect_equal(nrow(search1), 2L)
+  expect_named(search1, c("mentions", "word"))
+})
+
 test_that("String counts work", {
   # sheep tests word boundaries
   # cow tests capitalization
@@ -25,6 +39,7 @@ test_that("String counts work", {
   expect_equal(nrow(search2), 2L)
   expect_named(search1, c("mentions", "word"))
 })
+
 
 test_df <- data.frame(
   rownum = 1:3,
@@ -60,6 +75,13 @@ test_that("word count over data frame works: case sensitive", {
 
 test_that("word count over data frame works: no word boundaries", {
   count_df <- count_mentions_in_dataframe(test_df, words_to_find, T, F, F)
+  expect_true(inherits(count_df, "data.frame"))
+  expect_equal(count_df$mentions, c(3, 3, 2, 0, 1, 1))
+})
+
+test_that("multi-word count works ok", {
+  words_to_find <- c("cow pig", "sheep cow")
+  count_df <- count_mentions_in_dataframe(test_df, words_to_find, T, T, F)
   expect_true(inherits(count_df, "data.frame"))
   expect_equal(count_df$mentions, c(3, 3, 2, 0, 1, 1))
 })
