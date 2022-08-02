@@ -5,4 +5,5 @@
 #' @importFrom rlang .data
 #' @importFrom stats setNames
 #' @importFrom utils stack packageName
+#' @import ggplot2
 "_PACKAGE"
