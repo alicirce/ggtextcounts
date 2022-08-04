@@ -80,8 +80,8 @@ test_that("word count over data frame works: no word boundaries", {
 })
 
 test_that("multi-word count works ok", {
-  words_to_find <- c("cow pig", "sheep cow")
+  words_to_find <- c("cow pig", "sheep cow", "sheep sheep")
   count_df <- count_mentions_in_dataframe(test_df, words_to_find, T, T, F)
   expect_true(inherits(count_df, "data.frame"))
-  expect_equal(count_df$mentions, c(3, 3, 2, 0, 1, 1))
+  expect_equal(count_df$mentions, c(1, 1, 0))
 })

@@ -71,7 +71,7 @@ cat_wing_counts
 
 Lollipop plots are a visually attractive way of plotting counts.
 
-```{r fig.height = 1.5, fig.width = 2}
+```{r fig.height = 1.5, fig.width = 2, dpi=400}
 library(ggplot2)
 cat_wing_counts %>%
   group_by(word) %>%
