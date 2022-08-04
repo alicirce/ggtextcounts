@@ -85,3 +85,9 @@ test_that("multi-word count works ok", {
   expect_true(inherits(count_df, "data.frame"))
   expect_equal(count_df$mentions, c(1, 1, 0))
 })
+
+test_that("pre-count filtering checks word boundaries", {
+  count_df <- count_mentions_in_dataframe(test_df, "horse", T, T, F)
+  expect_true(inherits(count_df, "data.frame"))
+  expect_equal(nrow(count_df), 1)
+})

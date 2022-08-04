@@ -16,8 +16,8 @@ ggpacket is composed of geom_point and geom_segment.
 }
 \section{Functions}{
 \itemize{
-\item \code{geom_h_lollipop}: Lollipop plot with horizontal lines
+\item \code{geom_h_lollipop()}: Lollipop plot with horizontal lines
 
-\item \code{geom_v_lollipop}: Lollipop plot with vertical lines
+\item \code{geom_v_lollipop()}: Lollipop plot with vertical lines
+
 }}
-

@@ -17,7 +17,7 @@ count_word_mentions <- function(text, words, ignore_case = TRUE) {
         function(x) {
           suppressWarnings(
             sum(
-              str_count(text, regex(paste0("\\b", x, "\\b"), ignore_case))
+              str_count(text, regex(padb(x), ignore_case))
             )
           )
         },
@@ -26,6 +26,14 @@ count_word_mentions <- function(text, words, ignore_case = TRUE) {
     ),
     c("mentions", "word")
   )
+}
+
+#' Pad word so regex searches for word boundaries
+#'
+#' @param word word (or string) to pad
+
+padb <- function(word){
+  paste0("\\b", word, "\\b")
 }
 
 #' Count occurrences of each of a vector of words in a vector of texts
@@ -78,16 +86,19 @@ count_mentions_in_dataframe <- function(
   word_boundaries = TRUE,
   return_all_rows = FALSE
 ) {
+  if (word_boundaries) {
+    f_count <- count_word_mentions
+    f_pad <- padb
+  } else {
+    f_count <- count_text_mentions
+    f_pad <- function(x) x
+  }
   if (!return_all_rows) {
-    searchstring <- paste0(words, collapse = "|")
+    searchstring <- paste0(f_pad(words), collapse = "|")
     idx <- grepl(searchstring, dataframe$text, ignore.case = ignore_case)
     dataframe <- dataframe[idx, ]
   }
-  if (word_boundaries) {
-    f_count <- count_word_mentions
-  } else {
-    f_count <- count_text_mentions
-  }
+
   dataframe$mentions <- purrr::map(dataframe$text, f_count, words, ignore_case)
   tidyr::unnest(dataframe, .data$mentions)
 }
